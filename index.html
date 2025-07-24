@@ -30,11 +30,11 @@
 
   <script>
     const questions = [
-      { word: "사과", audio: "apple.mp3", choices: ["사과", "바나나", "포도"] },
-      { word: "학교", audio: "school.mp3", choices: ["병원", "학교", "시장"] },
-      { word: "우유", audio: "milk.mp3", choices: ["물", "커피", "우유"] },
-      { word: "감자", audio: "potato.mp3", choices: ["고구마", "감자", "당근"] },
-      { word: "의자", audio: "chair.mp3", choices: ["책상", "의자", "침대"] }
+      { word: "사과", audio: "audio/apple.mp3", choices: ["사과", "바나나", "포도"] },
+      { word: "학교", audio: "audio/school.mp3", choices: ["병원", "학교", "시장"] },
+      { word: "우유", audio: "audio/milk.mp3", choices: ["물", "커피", "우유"] },
+      { word: "감자", audio: "audio/potato.mp3", choices: ["고구마", "감자", "당근"] },
+      { word: "의자", audio: "audio/chair.mp3", choices: ["책상", "의자", "침대"] }
     ];
 
     let shuffledQuestions = [...questions].sort(() => 0.5 - Math.random());
