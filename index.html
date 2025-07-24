@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>韓文單字測驗</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: auto; text-align: center; padding: 30px; }
+    button { margin: 10px; padding: 10px 20px; font-size: 16px; }
+    .choice-btn { display: block; width: 100%; margin: 10px auto; }
+    .hidden { display: none; }
+    #nickname { padding: 8px; font-size: 16px; width: 60%; }
+  </style>
+</head>
+<body>
+  <h2>🔊 請聽音檔選出正確的韓文單字</h2>
+  <p id="question-number">第 1 題</p>
+  <audio id="audio" controls></audio>
+  <div id="choices"></div>
+  <button id="next-btn" disabled>下一題</button>
+
+  <div id="result" class="hidden">
+    <h2>🎯 測驗完成！</h2>
+    <p id="score-text"></p>
+    <p id="pass-fail"></p>
+    <input type="text" id="nickname" placeholder="請輸入暱稱">
+    <br>
+    <button onclick="submitToGoogle()">提交成績</button>
+    <button onclick="location.reload()">重新開始</button>
+  </div>
+
+  <script>
+    const questions = [
+      { word: "사과", audio: "audio/apple.mp3", choices: ["사과", "바나나", "포도"] },
+      { word: "학교", audio: "audio/school.mp3", choices: ["병원", "학교", "시장"] },
+      { word: "우유", audio: "audio/milk.mp3", choices: ["물", "커피", "우유"] },
+      { word: "감자", audio: "audio/potato.mp3", choices: ["고구마", "감자", "당근"] },
+      { word: "의자", audio: "audio/chair.mp3", choices: ["책상", "의자", "침대"] }
+    ];
+
+    let shuffledQuestions = [...questions].sort(() => 0.5 - Math.random());
+    let current = 0;
+    let correct = 0;
+
+    const audio = document.getElementById('audio');
+    const choicesDiv = document.getElementById('choices');
+    const nextBtn = document.getElementById('next-btn');
+    const questionNum = document.getElementById('question-number');
+
+    function loadQuestion() {
+      nextBtn.disabled = true;
+      questionNum.textContent = `第 ${current + 1} 題`;
+      const q = shuffledQuestions[current];
+      audio.src = q.audio;
+
+      choicesDiv.innerHTML = "";
+      q.choices.sort(() => 0.5 - Math.random()).forEach(choice => {
+        const btn = document.createElement("button");
+        btn.textContent = choice;
+        btn.className = "choice-btn";
+        btn.onclick = () => {
+          if (choice === q.word) correct++;
+          nextBtn.disabled = false;
+          document.querySelectorAll(".choice-btn").forEach(b => b.disabled = true);
+          btn.style.backgroundColor = (choice === q.word) ? "#8f8" : "#f88";
+        };
+        choicesDiv.appendChild(btn);
+      });
+    }
+
+    nextBtn.onclick = () => {
+      current++;
+      if (current < shuffledQuestions.length) {
+        loadQuestion();
+      } else {
+        showResult();
+      }
+    };
+
+    function showResult() {
+      document.getElementById('audio').classList.add('hidden');
+      choicesDiv.classList.add('hidden');
+      nextBtn.classList.add('hidden');
+      questionNum.classList.add('hidden');
+      document.getElementById('result').classList.remove('hidden');
+
+      const percent = Math.round((correct / shuffledQuestions.length) * 100);
+      document.getElementById("score-text").textContent = `你的分數是 ${percent}% (${correct} / ${shuffledQuestions.length})`;
+      document.getElementById("pass-fail").textContent = percent >= 80 ? "🎉 成績合格！" : "❌ 成績不合格";
+    }
+
+    function submitToGoogle() {
+      const nickname = document.getElementById("nickname").value;
+      if (!nickname) {
+        alert("請輸入暱稱");
+        return;
+      }
+      const score = Math.round((correct / shuffledQuestions.length) * 100);
+      const time = new Date().toLocaleString("zh-TW");
+
+      const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSfU2TwEzqxxI2tND4yW_hZ4AegzmLH3N4ZdSGViaOObIkvGNQ/formResponse";
+
+      const formData = new FormData();
+      formData.append("entry.946072899", nickname);
+      formData.append("entry.1352081389", score);
+      formData.append("entry.195285614", time);
+
+      fetch(formURL, {
+        method: "POST",
+        mode: "no-cors",
+        body: formData
+      }).then(() => {
+        alert("✅ 成績已成功回傳！");
+        location.reload();
+      }).catch(() => {
+        alert("❌ 回傳失敗，請稍後再試");
+      });
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
