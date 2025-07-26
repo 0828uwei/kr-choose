@@ -131,14 +131,13 @@
       const weekdays = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
       const weekday = weekdays[now.getDay()];
 
-      const formURL =
-        "https://docs.google.com/forms/d/e/1_7cL5MwyrRw8T8k0lZAvnjO0qM5pXNHm06OgiYhnKTg/formResponse";
+      const formURL = "https://docs.google.com/forms/d/e/1N7KyYLnGLev8nPecNINYSXd6iNiDW6QfhS5f0tWwzlY/formResponse";
 
       const formData = new FormData();
-      formData.append("entry.946072899", nickname); // 暱稱
-      formData.append("entry.1352081389", score); // 分數
-      formData.append("entry.195285614", time); // 時間
-      formData.append("entry.370485412", weekday); // 星期幾
+      formData.append("entry.1141644943", nickname); // 暱稱
+      formData.append("entry.1968231757", score);    // 分數
+      formData.append("entry.483952061", time);      // 時間
+      formData.append("entry.1985980257", weekday);  // 星期幾
 
       fetch(formURL, {
         method: "POST",
