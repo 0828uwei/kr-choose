@@ -51,7 +51,8 @@
     <h2>🎯 測驗完成！</h2>
     <p id="score-text"></p>
     <p id="pass-fail"></p>
-    <input type="text" id="nickname" placeholder="請輸入暱稱"><br>
+    <input type="text" id="nickname" placeholder="請輸入暱稱">
+    <br>
     <button onclick="submitToGoogle()">提交成績</button>
     <button onclick="location.reload()">重新開始</button>
   </div>
@@ -122,20 +123,15 @@
         alert("請輸入暱稱");
         return;
       }
-
       const score = Math.round((correct / shuffledQuestions.length) * 100);
-      const date = new Date();
-      const weekdays = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
-      const dayOfWeek = weekdays[date.getDay()];
-      const time = date.toLocaleString("zh-TW");
+      const time = new Date().toLocaleString("zh-TW");
 
-      const formURL = "https://docs.google.com/forms/d/e/你的表單ID/formResponse";
+      const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSfU2TwEzqxxI2tND4yW_hZ4AegzmLH3N4ZdSGViaOObIkvGNQ/formResponse";
 
       const formData = new FormData();
-      formData.append("entry.946072899", nickname);      // 暱稱
-      formData.append("entry.1352081389", score);         // 分數
-      formData.append("entry.195285614", time);           // 測驗時間
-      formData.append("entry.370485412", dayOfWeek);      // 星期幾
+      formData.append("entry.946072899", nickname);
+      formData.append("entry.1352081389", score);
+      formData.append("entry.195285614", time);
 
       fetch(formURL, {
         method: "POST",
