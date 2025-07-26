@@ -134,10 +134,10 @@
       const formURL = "https://docs.google.com/forms/d/e/1N7KyYLnGLev8nPecNINYSXd6iNiDW6QfhS5f0tWwzlY/formResponse";
 
       const formData = new FormData();
-      formData.append("entry.1141644943", nickname); // 暱稱
-      formData.append("entry.1968231757", score);    // 分數
-      formData.append("entry.483952061", time);      // 時間
-      formData.append("entry.1985980257", weekday);  // 星期幾
+      formData.append("entry.1141644943", nickname);  // 暱稱
+      formData.append("entry.1968231757", score);     // 分數
+      formData.append("entry.483952061", time);       // 時間
+      formData.append("entry.1985980257", weekday);   // 星期幾
 
       fetch(formURL, {
         method: "POST",
