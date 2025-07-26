@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>韓文單字測驗</title>
   <style>
     body {
@@ -51,8 +51,8 @@
     <h2>🎯 測驗完成！</h2>
     <p id="score-text"></p>
     <p id="pass-fail"></p>
-    <input type="text" id="nickname" placeholder="請輸入暱稱">
-    <br>
+    <input type="text" id="nickname" placeholder="請輸入暱稱" />
+    <br />
     <button onclick="submitToGoogle()">提交成績</button>
     <button onclick="location.reload()">重新開始</button>
   </div>
@@ -70,10 +70,10 @@
     let current = 0;
     let correct = 0;
 
-    const audio = document.getElementById('audio');
-    const choicesDiv = document.getElementById('choices');
-    const nextBtn = document.getElementById('next-btn');
-    const questionNum = document.getElementById('question-number');
+    const audio = document.getElementById("audio");
+    const choicesDiv = document.getElementById("choices");
+    const nextBtn = document.getElementById("next-btn");
+    const questionNum = document.getElementById("question-number");
 
     function loadQuestion() {
       nextBtn.disabled = true;
@@ -82,15 +82,15 @@
       audio.src = q.audio;
 
       choicesDiv.innerHTML = "";
-      q.choices.sort(() => 0.5 - Math.random()).forEach(choice => {
+      q.choices.sort(() => 0.5 - Math.random()).forEach((choice) => {
         const btn = document.createElement("button");
         btn.textContent = choice;
         btn.className = "choice-btn";
         btn.onclick = () => {
           if (choice === q.word) correct++;
           nextBtn.disabled = false;
-          document.querySelectorAll(".choice-btn").forEach(b => b.disabled = true);
-          btn.style.backgroundColor = (choice === q.word) ? "#8f8" : "#f88";
+          document.querySelectorAll(".choice-btn").forEach((b) => (b.disabled = true));
+          btn.style.backgroundColor = choice === q.word ? "#8f8" : "#f88";
         };
         choicesDiv.appendChild(btn);
       });
@@ -106,11 +106,11 @@
     };
 
     function showResult() {
-      document.getElementById('audio').classList.add('hidden');
-      choicesDiv.classList.add('hidden');
-      nextBtn.classList.add('hidden');
-      questionNum.classList.add('hidden');
-      document.getElementById('result').classList.remove('hidden');
+      audio.classList.add("hidden");
+      choicesDiv.classList.add("hidden");
+      nextBtn.classList.add("hidden");
+      questionNum.classList.add("hidden");
+      document.getElementById("result").classList.remove("hidden");
 
       const percent = Math.round((correct / shuffledQuestions.length) * 100);
       document.getElementById("score-text").textContent = `你的分數是 ${percent}% (${correct} / ${shuffledQuestions.length})`;
@@ -118,31 +118,40 @@
     }
 
     function submitToGoogle() {
-      const nickname = document.getElementById("nickname").value;
+      const nickname = document.getElementById("nickname").value.trim();
       if (!nickname) {
         alert("請輸入暱稱");
         return;
       }
       const score = Math.round((correct / shuffledQuestions.length) * 100);
-      const time = new Date().toLocaleString("zh-TW");
 
-      const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSfU2TwEzqxxI2tND4yW_hZ4AegzmLH3N4ZdSGViaOObIkvGNQ/formResponse";
+      const now = new Date();
+      const time = now.toLocaleString("zh-TW");
+
+      const weekdays = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+      const weekday = weekdays[now.getDay()];
+
+      const formURL =
+        "https://docs.google.com/forms/d/e/1_7cL5MwyrRw8T8k0lZAvnjO0qM5pXNHm06OgiYhnKTg/formResponse";
 
       const formData = new FormData();
-      formData.append("entry.946072899", nickname);
-      formData.append("entry.1352081389", score);
-      formData.append("entry.195285614", time);
+      formData.append("entry.946072899", nickname); // 暱稱
+      formData.append("entry.1352081389", score); // 分數
+      formData.append("entry.195285614", time); // 時間
+      formData.append("entry.370485412", weekday); // 星期幾
 
       fetch(formURL, {
         method: "POST",
         mode: "no-cors",
         body: formData
-      }).then(() => {
-        alert("✅ 成績已成功回傳！");
-        location.reload();
-      }).catch(() => {
-        alert("❌ 回傳失敗，請稍後再試");
-      });
+      })
+        .then(() => {
+          alert("✅ 成績已成功回傳！");
+          location.reload();
+        })
+        .catch(() => {
+          alert("❌ 回傳失敗，請稍後再試");
+        });
     }
 
     loadQuestion();
