@@ -67,13 +67,14 @@
     <p id="score-text"></p>
     <p id="pass-fail"></p>
     <input type="text" id="nickname" placeholder="請輸入暱稱" />
+    <p style="font-size: 14px; color: #555;">暱稱範例：王小明0828</p>
     <br />
-    <button onclick="submitToGoogle()">提交成績</button>
+    <button id="submit-btn" onclick="submitToGoogle()">提交成績</button>
     <button onclick="location.reload()">重新開始</button>
   </div>
 
   <script>
-    const gameTitle = "1-1韓文單字聽力測驗"; // 遊戲標題
+    const gameTitle = "1-1韓文單字聽力測驗";
 
     const questions = [
       { word: "사과", audio: "audio/apple.mp3", choices: ["사과", "바나나", "포도"] },
@@ -131,7 +132,19 @@
 
       const percent = Math.round((correct / shuffledQuestions.length) * 100);
       document.getElementById("score-text").textContent = `你的分數是 ${percent}% (${correct} / ${shuffledQuestions.length})`;
-      document.getElementById("pass-fail").textContent = percent >= 80 ? "🎉 成績合格！" : "❌ 成績不合格";
+
+      const passFailText = document.getElementById("pass-fail");
+      const submitBtn = document.getElementById("submit-btn");
+
+      if (percent >= 80) {
+        passFailText.textContent = "🎉 成績合格！";
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = "1";
+      } else {
+        passFailText.textContent = "❌ 成績不合格";
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = "0.5";
+      }
     }
 
     function submitToGoogle() {
@@ -140,22 +153,21 @@
         alert("請輸入暱稱");
         return;
       }
-      const score = Math.round((correct / shuffledQuestions.length) * 100);
 
+      const score = Math.round((correct / shuffledQuestions.length) * 100);
       const now = new Date();
       const time = now.toLocaleString("zh-TW");
-
       const weekdays = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
       const weekday = weekdays[now.getDay()];
 
       const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSd-Zd-yo_CYumklAb0uQ7gbFK3wKLakvi1-xJw1R7K5uzkpcQ/formResponse";
 
       const formData = new FormData();
-      formData.append("entry.1141644943", nickname);      // 暱稱
-      formData.append("entry.1968231757", score);         // 分數
-      formData.append("entry.483952061", time);           // 時間
-      formData.append("entry.1985980257", weekday);       // 星期幾
-      formData.append("entry.1128191043", gameTitle);     // 遊戲標題
+      formData.append("entry.1141644943", nickname);
+      formData.append("entry.1968231757", score);
+      formData.append("entry.483952061", time);
+      formData.append("entry.1985980257", weekday);
+      formData.append("entry.1128191043", gameTitle);
 
       fetch(formURL, {
         method: "POST",
