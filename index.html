@@ -15,6 +15,15 @@
     #logo {
       width: 150px;
       max-width: 80%;
+      margin-bottom: 10px;
+    }
+    #game-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    #question-number {
+      font-size: 18px;
       margin-bottom: 20px;
     }
     button {
@@ -47,8 +56,8 @@
 </head>
 <body>
   <img src="logo.png" alt="Logo" id="logo" />
-  <h2>🔊 請聽音檔選出正確的韓文單字</h2>
-  <p id="question-number">第 1 題</p>
+  <div id="game-title">🔊 韓文單字聽力測驗</div>
+  <p id="question-number">第 1 題 / 共 5 題</p>
   <audio id="audio" controls></audio>
   <div id="choices"></div>
   <button id="next-btn" disabled>下一題</button>
@@ -64,7 +73,7 @@
   </div>
 
   <script>
-    const gameTitle = "1-1韓文單字聽力測驗"; // 遊戲標題
+    const gameTitle = "🔊 韓文單字聽力測驗"; // 遊戲標題
 
     const questions = [
       { word: "사과", audio: "audio/apple.mp3", choices: ["사과", "바나나", "포도"] },
@@ -85,7 +94,7 @@
 
     function loadQuestion() {
       nextBtn.disabled = true;
-      questionNum.textContent = `第 ${current + 1} 題`;
+      questionNum.textContent = `第 ${current + 1} 題 / 共 ${shuffledQuestions.length} 題`;
       const q = shuffledQuestions[current];
       audio.src = q.audio;
 
