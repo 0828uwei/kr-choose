@@ -52,6 +52,11 @@
       max-width: 500px;
       margin: 20px 0;
     }
+    .note {
+      font-size: 14px;
+      color: #888;
+      margin: 2px 0;
+    }
   </style>
 </head>
 <body>
@@ -66,8 +71,9 @@
     <h2>🎯 測驗完成！</h2>
     <p id="score-text"></p>
     <p id="pass-fail"></p>
-    <input type="text" id="nickname" placeholder="請輸入暱稱" />
-    <p style="font-size: 14px; color: #555;">暱稱範例：王小明0828</p>
+    <input type="text" id="nickname" placeholder="請輸入暱稱（暱稱為：姓名＋生日）" />
+    <p class="note">暱稱範例：王小明0828</p>
+    <p class="note">請於挑戰當日回傳合格成績</p>
     <br />
     <button id="submit-btn" onclick="submitToGoogle()">提交成績</button>
     <button onclick="location.reload()">重新開始</button>
