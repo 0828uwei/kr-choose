@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>韓文單字測驗</title>
+  <title>1-1韓文單字測驗</title>
   <style>
     body {
       font-family: sans-serif;
@@ -11,6 +11,11 @@
       margin: auto;
       text-align: center;
       padding: 30px 15px;
+    }
+    #logo {
+      width: 150px;
+      max-width: 80%;
+      margin-bottom: 20px;
     }
     button {
       margin: 10px auto;
@@ -41,6 +46,7 @@
   </style>
 </head>
 <body>
+  <img src="logo.png" alt="Logo" id="logo" />
   <h2>🔊 請聽音檔選出正確的韓文單字</h2>
   <p id="question-number">第 1 題</p>
   <audio id="audio" controls></audio>
@@ -58,6 +64,8 @@
   </div>
 
   <script>
+    const gameTitle = "🔊 韓文單字聽力測驗"; // 遊戲標題
+
     const questions = [
       { word: "사과", audio: "audio/apple.mp3", choices: ["사과", "바나나", "포도"] },
       { word: "학교", audio: "audio/school.mp3", choices: ["병원", "학교", "시장"] },
@@ -134,10 +142,11 @@
       const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSd-Zd-yo_CYumklAb0uQ7gbFK3wKLakvi1-xJw1R7K5uzkpcQ/formResponse";
 
       const formData = new FormData();
-      formData.append("entry.1141644943", nickname);  // 暱稱
-      formData.append("entry.1968231757", score);     // 分數
-      formData.append("entry.483952061", time);       // 時間
-      formData.append("entry.1985980257", weekday);   // 星期幾
+      formData.append("entry.1141644943", nickname);      // 暱稱
+      formData.append("entry.1968231757", score);         // 分數
+      formData.append("entry.483952061", time);           // 時間
+      formData.append("entry.1985980257", weekday);       // 星期幾
+      formData.append("entry.1128191043", gameTitle);     // 遊戲標題
 
       fetch(formURL, {
         method: "POST",
